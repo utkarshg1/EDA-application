@@ -14,17 +14,19 @@ class EDA:
         con = list(df.columns[df.dtypes!='object'])
         return cat, con
 
-    def univariate_hist(self, column):
+    def univariate(self, column):
         df = self.df
-        fig = px.histogram(data_frame=df, x=column)
-        return fig 
-
-    def univariate_count(self, column):
-        df = self.df 
-        counts = df[column].value_counts().to_frame()
-        counts.reset_index(level=0, inplace=True)       
-        fig = px.bar(data_frame=counts, x=column, y='count')
-        return fig
+        cat, con = self.catconsep()
+        if column in con:
+            fig = px.histogram(data_frame=df, x=column)
+            st.write(f'Histogram for {column}')
+            return fig
+        else:            
+            counts = df[column].value_counts().to_frame()
+            counts.reset_index(level=0, inplace=True)       
+            fig = px.bar(data_frame=counts, x=column, y='count')
+            st.write(f'Count Plot for {column}')
+            return fig        
 
 st.set_page_config(page_title='EDA - Utkarsh Gaikwad')
 
@@ -51,11 +53,7 @@ if uploaded_file is not None:
     if option=='Univariate':
         st.subheader('Univariate Analysis')    
         col = st.selectbox('Select Column name :', tuple(df.columns))
-        if col in con:
-            fig1 = eda.univariate_hist(col)
-            st.plotly_chart(fig1)
-        else:
-            fig1 = eda.univariate_count(col)
-            st.plotly_chart(fig1)
+        fig1 = eda.univariate(col)
+        st.plotly_chart(fig1)
 
         
