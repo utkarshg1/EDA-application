@@ -18,7 +18,7 @@ Basic Information and data quality checked in this step
 
 Two plots are created here
 1. Histogram
-2. Box plots
+2. Count plots
 
 ![Univariate](./UI/UI%20Univariate.jpg)
 
